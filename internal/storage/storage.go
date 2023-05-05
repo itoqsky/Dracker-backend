@@ -1,5 +1,7 @@
 package storage
 
+import "github.com/jmoiron/sqlx"
+
 type Authorization interface {
 }
 
@@ -19,6 +21,6 @@ type Storage struct {
 	User
 }
 
-func NewStorage() *Storage {
+func NewStorage(*sqlx.DB) *Storage {
 	return &Storage{}
 }
