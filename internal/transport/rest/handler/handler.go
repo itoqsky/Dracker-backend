@@ -2,9 +2,15 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/itoqsky/money-tracker-backend/internal/service"
 )
 
 type Handler struct {
+	service *service.Service
+}
+
+func NewHandler(s *service.Service) *Handler {
+	return &Handler{service: s}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
@@ -29,6 +35,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			users := groups.Group("/:id/users")
 			{
 				users.GET("/", h.GetAllUsers)
+				users.POST("/", h.CreateUser)
 				users.DELETE("/:user_id", h.DeleteUser)
 			}
 
