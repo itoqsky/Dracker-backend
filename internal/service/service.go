@@ -11,24 +11,32 @@ type Authorization interface {
 	ParseToken(token string) (int, error)
 }
 
+type User interface {
+}
+
+type Group interface {
+	Create(userId int, group core.Group) (int, error)
+	GetAll(userId int) ([]core.Group, error)
+	GetById(userId, groupId int) (core.Group, error)
+}
+
 type Debt interface {
 }
 
 type Purchase interface {
 }
 
-type User interface {
-}
-
 type Service struct {
 	Authorization
+	User
+	Group
 	Debt
 	Purchase
-	User
 }
 
 func NewService(store *storage.Storage) *Service {
 	return &Service{
 		Authorization: NewAuthService(store.Authorization),
+		Group:         NewGroupService(store.Group),
 	}
 }

@@ -21,8 +21,8 @@ create table users_groups(
 );
 
 create table debts(
-    debtor int not null,
     creditor int not null,
+    debtor int not null,
     amount int not null,
 
     primary key (debtor, creditor),

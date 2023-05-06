@@ -1,26 +1,27 @@
 package core
 
 type Group struct {
-	ID        int        `json:"-"`
-	Name      string     `json:"name"`
-	Members   []UserID   `json:"members"`
-	Debts     []Debt     `json:"debts"`
-	Purchases []Purchase `json:"purchases"`
+	ID   int    `json:"id" db:"id"`
+	Name string `json:"name" db:"name" binding:"required"`
 }
 
-type UserID int
+type UsersGroup struct {
+	ID      int `json:"id"`
+	UserID  int `json:"user_id"`
+	GroupID int `json:"group_id"`
+}
 
 type Debt struct {
-	ID       int    `json:"id"`
-	Debtor   UserID `json:"debtor"`
-	Creditor UserID `json:"creditor"`
-	Amount   int    `json:"amount"`
+	ID         int     `json:"id"`
+	DebtorID   int     `json:"debtor_id"`
+	CreditorID int     `json:"creditor_id"`
+	Amount     float64 `json:"amount"`
 }
 
 type Purchase struct {
-	ID          int    `json:"id"`
-	SpentBy     UserID `json:"spent_by"`
-	Amount      int    `json:"amount"`
-	Date        string `json:"date"`
-	Description string `json:"description"`
+	ID          int     `json:"id"`
+	SpentByID   int     `json:"spent_by_id"`
+	Amount      float32 `json:"amount"`
+	Date        string  `json:"date"`
+	Description string  `json:"description"`
 }

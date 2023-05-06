@@ -2,22 +2,30 @@ package handler
 
 import "github.com/gin-gonic/gin"
 
-func (h *Handler) CreateUser(c *gin.Context) {
+func (h *Handler) createUser(c *gin.Context) {
 
 }
 
-func (h *Handler) GetUserById(c *gin.Context) {
+func (h *Handler) getUserById(c *gin.Context) {
 
 }
 
-func (h *Handler) GetAllUsers(c *gin.Context) {
+func (h *Handler) getAllUsers(c *gin.Context) {
 
 }
 
-func (h *Handler) UpdateUser(c *gin.Context) {
+func (h *Handler) updateUser(c *gin.Context) {
 
 }
 
-func (h *Handler) DeleteUser(c *gin.Context) {
+func (h *Handler) deleteUser(c *gin.Context) {
+
+}
+
+func (h *Handler) inviteUser(c *gin.Context) {
+
+}
+
+func (h *Handler) kickUser(c *gin.Context) {
 
 }

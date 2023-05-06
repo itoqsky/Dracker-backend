@@ -26,33 +26,33 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		groups := api.Group("/groups")
 		{
-			groups.POST("/", h.CreateGroup)
-			groups.GET("/", h.GetAllGroups)
-			groups.GET("/:id", h.GetGroupById)
-			groups.PUT("/:id", h.UpdateGroup)
-			groups.DELETE("/:id", h.DeleteGroup)
+			groups.POST("/", h.createGroup)
+			groups.GET("/", h.getAllGroups)
+			groups.GET("/:id", h.getGroupById)
+			groups.PUT("/:id", h.updateGroup)
+			groups.DELETE("/:id", h.deleteGroup)
 
 			users := groups.Group("/:id/users")
 			{
-				users.GET("/", h.GetAllUsers)
-				users.POST("/", h.CreateUser)
-				users.DELETE("/:user_id", h.DeleteUser)
+				users.GET("/", h.getAllUsers)
+				users.POST("/", h.inviteUser)
+				users.DELETE("/:user_id", h.kickUser)
 			}
 
 			purchases := api.Group(":id/purchases")
 			{
-				purchases.GET("/", h.GetAllPurchases)
-				purchases.GET("/:purchase_id", h.GetPurchaseById)
-				purchases.POST("/", h.CreatePurchase)
-				purchases.PUT("/:purchase_id", h.UpdatePurchase)
-				purchases.DELETE("/:purchase_id", h.DeletePurchase)
+				purchases.GET("/", h.getAllPurchases)
+				purchases.GET("/:purchase_id", h.getPurchaseById)
+				purchases.POST("/", h.createPurchase)
+				purchases.PUT("/:purchase_id", h.updatePurchase)
+				purchases.DELETE("/:purchase_id", h.deletePurchase)
 			}
 
 			debts := api.Group(":id/debts")
 			{
-				debts.GET("/", h.GetAllDebts)
-				debts.GET("/:debt_id", h.GetDebtById)
-				debts.PUT("/:debt_id", h.UpdateDebt)
+				debts.GET("/", h.getAllDebts)
+				debts.GET("/:debt_id", h.getDebtById)
+				debts.PUT("/:debt_id", h.updateDebt)
 			}
 		}
 
