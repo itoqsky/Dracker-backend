@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	"github.com/itoqsky/money-tracker-backend/internal/service"
@@ -10,16 +9,19 @@ import (
 	"github.com/itoqsky/money-tracker-backend/internal/transport/rest/handler"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 func main() {
+	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	if err := initConfig(); err != nil {
-		log.Fatalf("error occured while initializing configs: %s", err.Error())
+		logrus.Fatalf("error occured while initializing configs: %s", err.Error())
 	}
 
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("error occured while loading env variables: %s", err.Error())
+		logrus.Fatalf("error occured while loading env variables: %s", err.Error())
 	}
 
 	db, err := storage.NewPostgresDB(storage.Config{
@@ -32,7 +34,7 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatalf("error occured while connecting to db: %s", err.Error())
+		logrus.Fatalf("error occured while connecting to db: %s", err.Error())
 	}
 
 	storages := storage.NewStorage(db)
@@ -42,7 +44,7 @@ func main() {
 	srv := new(rest.Server)
 
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		log.Fatalf("error occured while running http server: %s", err.Error())
+		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}
 }
 

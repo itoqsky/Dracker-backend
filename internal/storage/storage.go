@@ -1,8 +1,12 @@
 package storage
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/itoqsky/money-tracker-backend/internal/core"
+	"github.com/jmoiron/sqlx"
+)
 
 type Authorization interface {
+	CreateUser(user core.User) (int, error)
 }
 
 type Debt interface {
@@ -21,6 +25,8 @@ type Storage struct {
 	User
 }
 
-func NewStorage(*sqlx.DB) *Storage {
-	return &Storage{}
+func NewStorage(db *sqlx.DB) *Storage {
+	return &Storage{
+		Authorization: NewAuthPostgres(db),
+	}
 }
