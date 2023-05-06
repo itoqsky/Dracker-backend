@@ -7,6 +7,7 @@ import (
 
 type Authorization interface {
 	CreateUser(user core.User) (int, error)
+	GenerateToken(email, password string) (string, error)
 }
 
 type Debt interface {
