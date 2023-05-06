@@ -22,13 +22,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		auth.POST("/sign-in", h.signIn)
 	}
 
-	api := routes.Group("/api")
+	api := routes.Group("/api", h.userIdentity)
 	{
 		groups := api.Group("/groups")
 		{
+			groups.POST("/", h.CreateGroup)
 			groups.GET("/", h.GetAllGroups)
 			groups.GET("/:id", h.GetGroupById)
-			groups.POST("/", h.CreateGroup)
 			groups.PUT("/:id", h.UpdateGroup)
 			groups.DELETE("/:id", h.DeleteGroup)
 
