@@ -46,9 +46,7 @@ func (h *Handler) getAllGroups(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllGroupsResponse{
-		Data: groups,
-	})
+	c.JSON(http.StatusOK, getAllGroupsResponse{groups})
 }
 
 func (h *Handler) getGroupById(c *gin.Context) {
@@ -73,9 +71,47 @@ func (h *Handler) getGroupById(c *gin.Context) {
 }
 
 func (h *Handler) updateGroup(c *gin.Context) {
+	id, err := getUserId(c)
+	if err != nil {
+		return
+	}
 
+	group_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var input core.UpdateGroupInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	if err := h.services.Group.Update(id, group_id, input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
 func (h *Handler) deleteGroup(c *gin.Context) {
+	id, err := getUserId(c)
+	if err != nil {
+		return
+	}
 
+	group_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err = h.services.Group.Delete(id, group_id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 }

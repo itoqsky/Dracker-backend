@@ -17,6 +17,8 @@ type Group interface {
 	Create(userId int, group core.Group) (int, error)
 	GetAll(userId int) ([]core.Group, error)
 	GetById(userId, groupId int) (core.Group, error)
+	Delete(userId, gropId int) error
+	Update(userId, groupId int, input core.UpdateGroupInput) error
 }
 
 type Debt interface {

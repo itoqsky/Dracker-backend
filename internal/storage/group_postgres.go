@@ -5,6 +5,7 @@ import (
 
 	"github.com/itoqsky/money-tracker-backend/internal/core"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type GroupPostgres struct {
@@ -57,4 +58,43 @@ func (r *GroupPostgres) GetById(userId, groupId int) (core.Group, error) {
 	err := r.db.Get(&group, query, userId, groupId)
 
 	return group, err
+}
+
+func (r *GroupPostgres) Delete(userId, groupId int) error {
+	query := fmt.Sprintf("DELETE FROM %s g USING %s ug WHERE g.id = ug.group_id AND ug.user_id=$1 AND ug.group_id=$2",
+		groupsTable, usersGroupsTable)
+	_, err := r.db.Exec(query, userId, groupId)
+
+	return err
+}
+
+func (r *GroupPostgres) Update(userId, groupId int, input core.UpdateGroupInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
+
+	if input.Name != nil {
+		setValues = append(setValues, fmt.Sprintf("name=$%d", argId))
+		argId++
+		args = append(args, *input.Name)
+	}
+
+	setQuery := ""
+	if len(setValues) > 0 {
+		setQuery = setValues[0]
+		for i := 1; i < len(setValues); i++ {
+			setQuery = fmt.Sprintf("%s, %s", setQuery, setValues[i])
+		}
+	}
+
+	query := fmt.Sprintf("UPDATE %s g SET %s FROM %s ug WHERE g.id = ug.group_id AND ug.user_id=$%d AND ug.group_id=$%d",
+		groupsTable, setQuery, usersGroupsTable, argId, argId+1)
+	args = append(args, userId, groupId)
+
+	logrus.Debugf("updateGroupQuery: %s", query)
+	logrus.Debugf("args: %v", args)
+
+	_, err := r.db.Exec(query, args...)
+
+	return err
 }

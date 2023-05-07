@@ -24,3 +24,14 @@ func (s *GroupService) GetAll(userId int) ([]core.Group, error) {
 func (s *GroupService) GetById(userId, groupId int) (core.Group, error) {
 	return s.store.GetById(userId, groupId)
 }
+
+func (s *GroupService) Delete(userId, groupId int) error {
+	return s.store.Delete(userId, groupId)
+}
+
+func (s *GroupService) Update(userId, groupId int, input core.UpdateGroupInput) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+	return s.store.Update(userId, groupId, input)
+}
