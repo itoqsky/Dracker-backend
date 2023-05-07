@@ -17,7 +17,7 @@ create table users_groups(
     
     primary key (user_id, group_id),
     foreign key (user_id) references users(id),
-    foreign key (group_id) references groups(id) on delete cascade
+    foreign key (group_id) references groups(id)
 );
 
 create table debts(

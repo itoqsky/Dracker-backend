@@ -11,6 +11,9 @@ type Authorization interface {
 }
 
 type User interface {
+	GetAll(userId, groupId int) ([]core.UserInvitePostgres, error)
+	Invite(groupId int, username string) error
+	KickUser(id, gropId, kickUserId int) error
 }
 
 type Group interface {

@@ -32,11 +32,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			groups.PUT("/:id", h.updateGroup)
 			groups.DELETE("/:id", h.deleteGroup)
 
-			users := groups.Group("/:id/users")
+			users := groups.Group(":id/users")
 			{
 				users.GET("/", h.getAllUsers)
 				users.POST("/", h.inviteUser)
-				users.DELETE("/:user_id", h.kickUser)
+				users.DELETE("/", h.kickUser)
 			}
 
 			purchases := api.Group(":id/purchases")
@@ -48,12 +48,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				purchases.DELETE("/:purchase_id", h.deletePurchase)
 			}
 
-			debts := api.Group(":id/debts")
-			{
-				debts.GET("/", h.getAllDebts)
-				debts.GET("/:debt_id", h.getDebtById)
-				debts.PUT("/:debt_id", h.updateDebt)
-			}
+		}
+
+		debts := api.Group("/debts")
+		{
+			debts.GET("/", h.getAllDebts)
+			debts.GET("/:id", h.getDebtById)
+			debts.PUT("/:id", h.updateDebt)
 		}
 
 		// users := api.Group("/users")

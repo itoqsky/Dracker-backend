@@ -12,6 +12,9 @@ type Authorization interface {
 }
 
 type User interface {
+	GetAll(userId, groupId int) ([]core.UserInvitePostgres, error)
+	Invite(id, groupId int, username string) error
+	KickUser(id, gropId, kickUserId int) error
 }
 
 type Group interface {
@@ -40,5 +43,6 @@ func NewService(store *storage.Storage) *Service {
 	return &Service{
 		Authorization: NewAuthService(store.Authorization),
 		Group:         NewGroupService(store.Group),
+		User:          NewUserService(store.User, store.Group),
 	}
 }
