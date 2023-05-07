@@ -6,7 +6,8 @@ import (
 )
 
 type GroupService struct {
-	store storage.Group
+	store     storage.Group
+	storeUser storage.User
 }
 
 func NewGroupService(store storage.Group) *GroupService {
@@ -26,7 +27,12 @@ func (s *GroupService) GetById(userId, groupId int) (core.Group, error) {
 }
 
 func (s *GroupService) Delete(userId, groupId int) error {
-	return s.store.Delete(userId, groupId)
+	users, err := s.storeUser.GetAll(groupId)
+	if err != nil {
+		return err
+	}
+
+	return s.store.Delete(len(users), userId, groupId)
 }
 
 func (s *GroupService) Update(userId, groupId int, input core.UpdateGroupInput) error {

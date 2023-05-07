@@ -12,7 +12,7 @@ type Authorization interface {
 }
 
 type User interface {
-	GetAll(userId, groupId int) ([]core.UserInvitePostgres, error)
+	GetAll(userId, groupId int) ([]core.UserInputGetAll, error)
 	Invite(id, groupId int, username string) error
 	KickUser(id, gropId, kickUserId int) error
 }

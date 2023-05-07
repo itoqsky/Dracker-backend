@@ -60,22 +60,17 @@ func (r *GroupPostgres) GetById(userId, groupId int) (core.Group, error) {
 	return group, err
 }
 
-func (r *GroupPostgres) Delete(userId, groupId int) error {
-	groups, err := r.GetAll(userId)
-	if err != nil {
-		return err
-	}
-
+func (r *GroupPostgres) Delete(users_sz, userId, groupId int) error {
 	var query string
 
-	if len(groups) < 2 {
+	if users_sz < 2 {
 		query = fmt.Sprintf("DELETE FROM %s g USING %s ug WHERE g.id = ug.group_id AND ug.user_id=$1 AND ug.group_id=$2",
 			groupsTable, usersGroupsTable)
 	} else {
 		query = fmt.Sprintf("DELETE FROM %s ug WHERE ug.user_id=$1 AND ug.group_id=$2",
 			usersGroupsTable)
 	}
-	_, err = r.db.Exec(query, userId, groupId)
+	_, err := r.db.Exec(query, userId, groupId)
 	return err
 }
 

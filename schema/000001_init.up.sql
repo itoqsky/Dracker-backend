@@ -23,7 +23,7 @@ create table users_groups(
 create table debts(
     creditor int not null,
     debtor int not null,
-    amount int not null,
+    amount float not null,
 
     primary key (debtor, creditor),
     foreign key (debtor) references users(id),
@@ -33,7 +33,7 @@ create table debts(
 create table purchases(
     id serial primary key,
     group_id int not null,
-    cost int not null,
+    amount float not null,
     buyer int not null,
     description varchar(255) not null,
 

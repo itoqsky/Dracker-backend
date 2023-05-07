@@ -10,11 +10,20 @@ type User struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type UserInvitePostgres struct {
-	Username string `json:"username" db:"username" binding:"required"`
+type UserInputGetAll struct {
+	Id       int    `json:"id" db:"id"`
+	Username string `json:"username" db:"username"`
 }
 
-func (u *UserInvitePostgres) Validate() error {
+type UserInputKick struct {
+	Id int `json:"id" binding:"required"`
+}
+
+type UserInputInvite struct {
+	Username string `json:"username" binding:"required"`
+}
+
+func (u *UserInputInvite) Validate() error {
 	if u.Username == "" {
 		return errors.New("update payload has no required fields")
 	}

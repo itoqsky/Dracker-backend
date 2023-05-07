@@ -14,8 +14,12 @@ func NewUserService(store storage.User, storeGroup storage.Group) *UserService {
 	return &UserService{store: store, storeGroup: storeGroup}
 }
 
-func (s *UserService) GetAll(userId, groupId int) ([]core.UserInvitePostgres, error) {
-	return s.store.GetAll(userId, groupId)
+func (s *UserService) GetAll(userId, groupId int) ([]core.UserInputGetAll, error) {
+	// _, err := s.storeGroup.GetById(userId, groupId)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	return s.store.GetAll(groupId)
 }
 
 func (s *UserService) Invite(id, groupId int, username string) error {

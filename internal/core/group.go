@@ -17,7 +17,7 @@ type Debt struct {
 	ID         int     `json:"id"`
 	DebtorID   int     `json:"debtor_id"`
 	CreditorID int     `json:"creditor_id"`
-	Amount     float64 `json:"amount"`
+	Amount     float32 `json:"amount"`
 }
 
 type Purchase struct {

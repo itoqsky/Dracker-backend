@@ -25,7 +25,7 @@ func (h *Handler) deleteUser(c *gin.Context) {
 }
 
 type getAllUsersResponse struct {
-	Data []core.UserInvitePostgres `json:"data"`
+	Data []core.UserInputGetAll `json:"data"`
 }
 
 func (h *Handler) getAllUsers(c *gin.Context) {
@@ -39,7 +39,6 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
 	users, err := h.services.User.GetAll(id, groupId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -61,7 +60,7 @@ func (h *Handler) inviteUser(c *gin.Context) {
 		return
 	}
 
-	var input core.UserInvitePostgres
+	var input core.UserInputInvite
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -88,11 +87,17 @@ func (h *Handler) kickUser(c *gin.Context) {
 		return
 	}
 
-	var input core.UserKickPostgres
+	var input core.UserInputKick
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err = h.services.User.KickUser(id, groupId, input.id.(int))
+	err = h.services.User.KickUser(id, groupId, input.Id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 }

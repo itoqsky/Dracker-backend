@@ -11,16 +11,16 @@ type Authorization interface {
 }
 
 type User interface {
-	GetAll(userId, groupId int) ([]core.UserInvitePostgres, error)
+	GetAll(groupId int) ([]core.UserInputGetAll, error)
 	Invite(groupId int, username string) error
-	KickUser(id, gropId, kickUserId int) error
+	KickUser(gropId, kickUserId int) error
 }
 
 type Group interface {
 	Create(userId int, group core.Group) (int, error)
 	GetAll(userId int) ([]core.Group, error)
 	GetById(userId, groupId int) (core.Group, error)
-	Delete(userId, gropId int) error
+	Delete(users_sz, userId, gropId int) error
 	Update(userId, groupId int, input core.UpdateGroupInput) error
 }
 
@@ -42,5 +42,6 @@ func NewStorage(db *sqlx.DB) *Storage {
 	return &Storage{
 		Authorization: NewAuthPostgres(db),
 		Group:         NewGroupPostgres(db),
+		User:          NewUserPostgres(db),
 	}
 }
