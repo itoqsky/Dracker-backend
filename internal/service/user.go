@@ -15,10 +15,10 @@ func NewUserService(store storage.User, storeGroup storage.Group) *UserService {
 }
 
 func (s *UserService) GetAll(userId, groupId int) ([]core.UserInputGetAll, error) {
-	// _, err := s.storeGroup.GetById(userId, groupId)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	_, err := s.storeGroup.GetById(userId, groupId)
+	if err != nil {
+		return nil, err
+	}
 	return s.store.GetAll(groupId)
 }
 

@@ -10,8 +10,8 @@ type GroupService struct {
 	storeUser storage.User
 }
 
-func NewGroupService(store storage.Group) *GroupService {
-	return &GroupService{store: store}
+func NewGroupService(store storage.Group, storeUser storage.User) *GroupService {
+	return &GroupService{store: store, storeUser: storeUser}
 }
 
 func (s *GroupService) Create(userId int, group core.Group) (int, error) {
@@ -31,7 +31,6 @@ func (s *GroupService) Delete(userId, groupId int) error {
 	if err != nil {
 		return err
 	}
-
 	return s.store.Delete(len(users), userId, groupId)
 }
 

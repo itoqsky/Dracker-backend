@@ -21,6 +21,10 @@ func (h *Handler) createPurchase(c *gin.Context) {
 	}
 	input.BuyerId = id
 	input.GroupId, err = strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	res, err := h.services.Purchase.Create(input)
 	if err != nil {
@@ -55,23 +59,19 @@ func (h *Handler) getAllPurchases(c *gin.Context) {
 	c.JSON(http.StatusOK, getAllPurchasesResponse{purchases})
 }
 
-type InputgetPurchaseById struct {
-	PurchaseId int `json:"purchase_id" binding:"required"`
-}
-
 func (h *Handler) getPurchaseById(c *gin.Context) {
 	_, err := getUserId(c)
 	if err != nil {
 		return
 	}
 
-	var input InputgetPurchaseById
-	if err := c.BindJSON(&input); err != nil {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	purchace, err := h.services.Purchase.GetById(input.PurchaseId)
+	purchace, err := h.services.Purchase.GetById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -117,7 +117,7 @@ func (h *Handler) deletePurchase(c *gin.Context) {
 		return
 	}
 
-	purchaseId, err := strconv.Atoi(c.Param("purchase_id"))
+	purchaseId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

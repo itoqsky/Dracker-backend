@@ -47,7 +47,7 @@ type Service struct {
 func NewService(store *storage.Storage) *Service {
 	return &Service{
 		Authorization: NewAuthService(store.Authorization),
-		Group:         NewGroupService(store.Group),
+		Group:         NewGroupService(store.Group, store.User),
 		User:          NewUserService(store.User, store.Group),
 		Purchase:      NewPurchaseService(store.Purchase, store.User),
 	}

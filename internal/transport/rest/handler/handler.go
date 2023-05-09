@@ -39,7 +39,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				users.DELETE("/", h.kickUser)
 			}
 
-			purchases := api.Group(":id/purchases")
+			purchases := groups.Group(":id/purchases")
 			{
 				purchases.POST("/", h.createPurchase)
 				purchases.GET("/", h.getAllPurchases)

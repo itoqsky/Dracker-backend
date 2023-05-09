@@ -88,7 +88,7 @@ func (r *PurchasePostgres) Update(purchase core.Purchase, users []core.UserInput
 
 	setValues := fmt.Sprintf("amount=$1, description=$2")
 	query = fmt.Sprintf("UPDATE %s SET %s WHERE id=$3", purchasesTable, setValues)
-	_, err = tx.Exec(query, purchase.Amount, purchase.Description, purchase.ID)
+	_, err = tx.Exec(query, newAmount, purchase.Description, purchase.ID)
 	if err != nil {
 		tx.Rollback()
 		return err
