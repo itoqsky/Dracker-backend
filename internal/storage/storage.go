@@ -28,6 +28,11 @@ type Debt interface {
 }
 
 type Purchase interface {
+	Create(purchase core.Purchase, users []core.UserInputGetAll) (core.CreatePurchaseResponse, error)
+	GetAll(groupId int) ([]core.Purchase, error)
+	GetById(id int) (core.Purchase, error)
+	Update(purchase core.Purchase, users []core.UserInputGetAll) error
+	Delete(purchase core.Purchase, users []core.UserInputGetAll) error
 }
 
 type Storage struct {
@@ -43,5 +48,6 @@ func NewStorage(db *sqlx.DB) *Storage {
 		Authorization: NewAuthPostgres(db),
 		Group:         NewGroupPostgres(db),
 		User:          NewUserPostgres(db),
+		Purchase:      NewPurchasePostgres(db),
 	}
 }

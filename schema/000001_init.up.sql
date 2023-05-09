@@ -21,22 +21,23 @@ create table users_groups(
 );
 
 create table debts(
-    creditor int not null,
-    debtor int not null,
+    creditor_id int not null,
+    debtor_id int not null,
     amount float not null,
 
-    primary key (debtor, creditor),
-    foreign key (debtor) references users(id),
-    foreign key (creditor) references users(id)
+    primary key (debtor_id, creditor_id),
+    foreign key (debtor_id) references users(id),
+    foreign key (creditor_id) references users(id)
 );
 
 create table purchases(
     id serial primary key,
     group_id int not null,
     amount float not null,
-    buyer int not null,
+    buyer_id int not null,
     description varchar(255) not null,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
     foreign key (group_id) references groups(id),
-    foreign key (buyer) references users(id)
+    foreign key (buyer_id) references users(id)
 );

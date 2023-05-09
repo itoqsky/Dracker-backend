@@ -14,18 +14,19 @@ type UsersGroup struct {
 }
 
 type Debt struct {
-	ID         int     `json:"id"`
-	DebtorID   int     `json:"debtor_id"`
-	CreditorID int     `json:"creditor_id"`
-	Amount     float32 `json:"amount"`
+	ID         int     `json:"id" db:"id"`
+	CreditorID int     `json:"creditor_id" db:"creditor_id"`
+	DebtorID   int     `json:"debtor_id" db:"debtor_id"`
+	Amount     float32 `json:"amount" db:"amount"`
 }
 
 type Purchase struct {
-	ID          int     `json:"id"`
-	SpentByID   int     `json:"spent_by_id"`
-	Amount      float32 `json:"amount"`
-	Date        string  `json:"date"`
-	Description string  `json:"description"`
+	ID          int     `json:"id" db:"id"`
+	GroupId     int     `json:"group_id" db:"group_id"`
+	Amount      float32 `json:"amount" db:"amount" binding:"required"`
+	BuyerId     int     `json:"buyer_id" db:"buyer_id"`
+	Description string  `json:"description" db:"description" binding:"required"`
+	Timestamp   string  `json:"timestamp" db:"timestamp"`
 }
 
 type UpdateGroupInput struct {
@@ -37,4 +38,9 @@ func (i *UpdateGroupInput) Validate() error {
 		return errors.New("update payload has no required fields")
 	}
 	return nil
+}
+
+type CreatePurchaseResponse struct {
+	ID        int    `json:"id" db:"id"`
+	Timestamp string `json:"timestamp" db:"timestamp"`
 }

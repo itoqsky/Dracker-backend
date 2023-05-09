@@ -29,6 +29,11 @@ type Debt interface {
 }
 
 type Purchase interface {
+	Create(purchase core.Purchase) (core.CreatePurchaseResponse, error)
+	GetAll(groupId int) ([]core.Purchase, error)
+	GetById(id int) (core.Purchase, error)
+	Update(purchase core.Purchase) error
+	Delete(purchase core.Purchase) error
 }
 
 type Service struct {
@@ -44,5 +49,6 @@ func NewService(store *storage.Storage) *Service {
 		Authorization: NewAuthService(store.Authorization),
 		Group:         NewGroupService(store.Group),
 		User:          NewUserService(store.User, store.Group),
+		Purchase:      NewPurchaseService(store.Purchase, store.User),
 	}
 }
