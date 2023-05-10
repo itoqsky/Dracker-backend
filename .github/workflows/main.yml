@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  REGISTRY: "registry.digitalocean.com/reader-adviser-bot"
+  IMAGE_NAME: "reader-adviser-bot-api"
+  CONTAINER_NAME: "reader-adviser-bot-api"
+  LOGS_PATH: "/root/reader-adviser-bot/api/logs/prod"
+
+jobs:
+  build_and_push:
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+
+      - name: Build container image
+        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+
+
+  deploy:
+    needs: build_and_push
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
+
+    steps:
+      - name: Deploy to DigitalOcean droplet via SSH action
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }} 
+          port: ${{ secrets.PORT }}
+          envs: IMAGE_NAME,REGISTRY,GITHUB_SHA,LOGS_PATH,CONTAINER_NAME
+
+          script: |
+            # Log in to DigitalOcean Container Registry with short-lived credentials
+            docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} $(echo $REGISTRY)
+
+            docker-compose stop
+            docker-compose rm -f
+            docker-compose pull
+            docker-compose up

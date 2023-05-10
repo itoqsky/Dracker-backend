@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  server:
+    image: money-tracker-backend
+    container_name: "money-tracker-backend"
+    build: ./Dockerfile.local
+    volumes:
+      - ./.build/volumes/logs:/logs
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+  db:
+    restart: always
+    image: postgres:alpine
+    volumes:
+      - ./.build/volumes/databases/postgres/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
