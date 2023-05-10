@@ -1,7 +1,12 @@
 package main
 
 import (
+	"context"
+	"log"
+	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/itoqsky/money-tracker-backend/internal/service"
 	"github.com/itoqsky/money-tracker-backend/internal/storage"
@@ -43,8 +48,24 @@ func main() {
 
 	srv := new(rest.Server)
 
-	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		logrus.Fatalf("error occured while running http server: %s", err.Error())
+	go func() {
+		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+			logrus.Fatalf("error occured while running http server: %s", err.Error())
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+
+	log.Printf("\nMoney-tracker app shutting down...")
+
+	if err := srv.Shutdown(context.Background()); err != nil && err != http.ErrServerClosed {
+		logrus.Errorf("error occured on server shutting down: %s", err.Error())
+	}
+
+	if err := db.Close(); err != nil {
+		logrus.Errorf("error occured on closing database: %s", err.Error())
 	}
 }
 
