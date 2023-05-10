@@ -43,21 +43,16 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				purchases.POST("/", h.createPurchase)
 				purchases.GET("/", h.getAllPurchases)
+				purchases.GET("/:p_id", h.getPurchaseById)
+				purchases.PUT("/:p_id", h.updatePurchase)
+				purchases.DELETE("/:p_id", h.deletePurchase)
 			}
-		}
-
-		purchases := api.Group("/purchases")
-		{
-			purchases.GET("/:id", h.getPurchaseById)
-			purchases.PUT("/:id", h.updatePurchase)
-			purchases.DELETE("/:id", h.deletePurchase)
 		}
 
 		debts := api.Group("/debts")
 		{
 			debts.GET("/", h.getAllDebts)
-			debts.GET("/:id", h.getDebtById)
-			debts.PUT("/:id", h.updateDebt)
+			debts.PUT("/", h.updateDebt)
 		}
 
 		// users := api.Group("/users")

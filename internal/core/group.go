@@ -14,10 +14,9 @@ type UsersGroup struct {
 }
 
 type Debt struct {
-	ID         int     `json:"id" db:"id"`
 	CreditorID int     `json:"creditor_id" db:"creditor_id"`
-	DebtorID   int     `json:"debtor_id" db:"debtor_id"`
-	Amount     float32 `json:"amount" db:"amount"`
+	DebtorID   int     `json:"debtor_id" db:"debtor_id" binding:"required"`
+	Amount     float32 `json:"amount" db:"amount" binding:"required"`
 }
 
 type Purchase struct {

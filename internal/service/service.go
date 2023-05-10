@@ -26,6 +26,8 @@ type Group interface {
 }
 
 type Debt interface {
+	GetAll(groupId int) ([]core.Debt, []core.Debt, error)
+	Update(debt core.Debt) error
 }
 
 type Purchase interface {
@@ -50,5 +52,6 @@ func NewService(store *storage.Storage) *Service {
 		Group:         NewGroupService(store.Group, store.User),
 		User:          NewUserService(store.User, store.Group),
 		Purchase:      NewPurchaseService(store.Purchase, store.User),
+		Debt:          NewDebtService(store.Debt),
 	}
 }

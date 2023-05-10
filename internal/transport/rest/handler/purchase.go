@@ -65,7 +65,7 @@ func (h *Handler) getPurchaseById(c *gin.Context) {
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("p_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -85,19 +85,24 @@ func (h *Handler) updatePurchase(c *gin.Context) {
 		return
 	}
 
-	var input core.Purchase
-	if err := c.BindJSON(&input); err != nil {
+	var purchace core.Purchase
+	if err := c.BindJSON(&purchace); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	input.BuyerId = id
-	input.ID, err = strconv.Atoi(c.Param("id"))
+	purchace.BuyerId = id
+	purchace.GroupId, err = strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	purchace.ID, err = strconv.Atoi(c.Param("p_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err = h.services.Purchase.Update(input)
+	err = h.services.Purchase.Update(purchace)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -107,24 +112,19 @@ func (h *Handler) updatePurchase(c *gin.Context) {
 	})
 }
 
-type InputDeletePurchase struct {
-	GroupId int `json:"group_id" binding:"required"`
-}
-
 func (h *Handler) deletePurchase(c *gin.Context) {
 	id, err := getUserId(c)
 	if err != nil {
 		return
 	}
 
-	purchaseId, err := strconv.Atoi(c.Param("id"))
+	groupId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	var input InputDeletePurchase
-	if err := c.BindJSON(&input); err != nil {
+	purchaseId, err := strconv.Atoi(c.Param("p_id"))
+	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -132,7 +132,7 @@ func (h *Handler) deletePurchase(c *gin.Context) {
 	purhcase := core.Purchase{
 		ID:      purchaseId,
 		BuyerId: id,
-		GroupId: input.GroupId,
+		GroupId: groupId,
 	}
 
 	err = h.services.Purchase.Delete(purhcase)

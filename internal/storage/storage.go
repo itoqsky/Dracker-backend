@@ -25,6 +25,8 @@ type Group interface {
 }
 
 type Debt interface {
+	GetAll(groupId int) ([]core.Debt, []core.Debt, error)
+	Update(debt core.Debt) error
 }
 
 type Purchase interface {
@@ -49,5 +51,6 @@ func NewStorage(db *sqlx.DB) *Storage {
 		Group:         NewGroupPostgres(db),
 		User:          NewUserPostgres(db),
 		Purchase:      NewPurchasePostgres(db),
+		Debt:          NewDebtPostgres(db),
 	}
 }
