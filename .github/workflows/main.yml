@@ -54,7 +54,7 @@ jobs:
             # Log in to DigitalOcean Container Registry with short-lived credentials
             docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} $(echo $REGISTRY)
 
-            export DB_PASSWORD=${{ sectrets.DB_PASSWORD }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
             docker-compose stop
             docker-compose rm -f
