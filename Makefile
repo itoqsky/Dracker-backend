@@ -2,7 +2,7 @@
 
 build:
 # go mod download && CGO_ENABLED=0 GOOS=linux go build -o ./.bin/app ./cmd/api/main.go
-	docker-compose build todo-app
+	docker-compose build mt_app
 
 run: build
 	docker-compose up --remove-orphans --build server

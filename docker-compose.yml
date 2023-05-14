@@ -1,12 +1,14 @@
-version: '3.4'
+version: '3.8'
 
 services:
   server:
     image: money-tracker-backend
     container_name: "money-tracker-backend"
-    build: ./Dockerfile.local
+    build: ./
+    command: ./wait-for-postgres.sh db ./app
     volumes:
-      - ./.build/volumes/logs:/logs
+      - ./.bin/:/root/
+      - ./configs/:/root/configs/
     env_file:
       - .env
     ports:
@@ -16,8 +18,10 @@ services:
 
   db:
     restart: always
-    image: postgres:alpine
+    image: postgres:latest
     volumes:
       - ./.build/volumes/databases/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=qwerty
     ports:
-      - 5432:5432
+      - 5436:5432
