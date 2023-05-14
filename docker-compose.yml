@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   server:
-    image: money-tracker-backend
-    container_name: "money-tracker-backend"
+    image: money-tracker-backend-api
+    container_name: "money-tracker-backend-api"
     build: ./
     command: ./wait-for-postgres.sh db ./app
     volumes:
