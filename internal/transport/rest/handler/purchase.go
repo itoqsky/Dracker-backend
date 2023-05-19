@@ -8,20 +8,6 @@ import (
 	"github.com/itoqsky/money-tracker-backend/internal/core"
 )
 
-//	@Summary		Create purchase
-//	@Security		ApiKeyAuth
-//	@Tags			purchase
-//	@Description	create purchase
-//	@ID				create-purchase
-//	@Accept			json
-//	@Produce		json
-//	@Param			input	body		core.Purchase	true	"purchase info"
-//	@Success		200		{object}	string			"purchase_id"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups/{id}/purchases [post]
-
 func (h *Handler) createPurchase(c *gin.Context) {
 	id, err := getUserId(c)
 	if err != nil {
@@ -51,19 +37,6 @@ func (h *Handler) createPurchase(c *gin.Context) {
 type getAllPurchasesResponse struct {
 	Data []core.Purchase `json:"data"`
 }
-
-//	@Summary		Get all purchases
-//	@Security		ApiKeyAuth
-//	@Tags			purchase
-//	@Description	get all purchases
-//	@ID				get-all-purchases
-//	@Accept			json
-//	@Produce		json
-//	@Success		200		{object}	getAllPurchasesResponse
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups/{id}/purchases [get]
 
 func (h *Handler) getAllPurchases(c *gin.Context) {
 	_, err := getUserId(c)
@@ -106,20 +79,6 @@ func (h *Handler) getPurchaseById(c *gin.Context) {
 	c.JSON(http.StatusOK, purchace)
 }
 
-//	@Summary		Update purchase
-//	@Security		ApiKeyAuth
-//	@Tags			purchase
-//	@Description	update purchase
-//	@ID				update-purchase
-//	@Accept			json
-//	@Produce		json
-//	@Param			input	body		core.Purchase	true	"purchase info"
-//	@Success		200		{object}	string			"status"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups/{id}/purchases/{p_id} [put]
-
 func (h *Handler) updatePurchase(c *gin.Context) {
 	id, err := getUserId(c)
 	if err != nil {
@@ -152,19 +111,6 @@ func (h *Handler) updatePurchase(c *gin.Context) {
 		"status": "ok",
 	})
 }
-
-//	@Summary		Delete purchase
-//	@Security		ApiKeyAuth
-//	@Tags			purchase
-//	@Description	delete purchase
-//	@ID				delete-purchase
-//	@Accept			json
-//	@Produce		json
-//	@Success		200		{object}	string	"status"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups/{id}/purchases/{p_id} [delete]
 
 func (h *Handler) deletePurchase(c *gin.Context) {
 	id, err := getUserId(c)

@@ -16,20 +16,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-
-	_ "github.com/itoqsky/money-tracker-backend/docs"
 )
-
-//	@title			Money-tracker API
-//	@version		v1
-//	@description	API server for money-tracker application.
-
-//	@host		localhost:8080
-//	@BasePath	/
-
-//	@securityDefinitions.apikey	ApiKeyAuth
-//	@in							header
-//	@name						Authorization
 
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))

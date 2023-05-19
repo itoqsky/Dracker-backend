@@ -56,10 +56,6 @@ jobs:
 
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
-            export IMAGE_NAME=$(echo $IMAGE_NAME)
-            export REGISTRY=$(echo $REGISTRY)
-            export GITHUB_SHA=$(echo $GITHUB_SHA | head -c7)
-
             docker-compose stop
             docker-compose rm -f
             docker-compose pull

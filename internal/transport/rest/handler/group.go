@@ -8,20 +8,6 @@ import (
 	"github.com/itoqsky/money-tracker-backend/internal/core"
 )
 
-//	@Summary		Create group
-//	@Security		ApiKeyAuth
-//	@Tags			group
-//	@Description	create group
-//	@ID				create-group
-//	@Accept			json
-//	@Produce		json
-//	@Param			input	body		core.Group	true	"group info"
-//	@Success		200		{object}	string		"group_id"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups [post]
-
 func (h *Handler) createGroup(c *gin.Context) {
 	id, err := getUserId(c)
 	if err != nil {
@@ -47,19 +33,6 @@ func (h *Handler) createGroup(c *gin.Context) {
 type getAllGroupsResponse struct {
 	Data []core.Group `json:"data"`
 }
-
-//	@Summary		Get all groups
-//	@Security		ApiKeyAuth
-//	@Tags			group
-//	@Description	get all groups
-//	@ID				get-all-groups
-//	@Accept			json
-//	@Produce		json
-//	@Success		200		{object}	getAllGroupsResponse
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups [get]
 
 func (h *Handler) getAllGroups(c *gin.Context) {
 	id, err := getUserId(c)
@@ -97,20 +70,6 @@ func (h *Handler) getGroupById(c *gin.Context) {
 	c.JSON(http.StatusOK, group)
 }
 
-//	@Summary		Update group
-//	@Security		ApiKeyAuth
-//	@Tags			group
-//	@Description	update group
-//	@ID				update-group
-//	@Accept			json
-//	@Produce		json
-//	@Param			input	body		core.UpdateGroupInput	true	"group info"
-//	@Success		200		{object}	string					"status"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups/{id} [put]
-
 func (h *Handler) updateGroup(c *gin.Context) {
 	id, err := getUserId(c)
 	if err != nil {
@@ -135,19 +94,6 @@ func (h *Handler) updateGroup(c *gin.Context) {
 
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
-
-//	@Summary		Delete group
-//	@Security		ApiKeyAuth
-//	@Tags			group
-//	@Description	delete group
-//	@ID				delete-group
-//	@Accept			json
-//	@Produce		json
-//	@Success		200		{object}	string	"status"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/groups/{id} [delete]
 
 func (h *Handler) deleteGroup(c *gin.Context) {
 	id, err := getUserId(c)

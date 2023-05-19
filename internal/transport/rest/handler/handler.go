@@ -3,11 +3,6 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/itoqsky/money-tracker-backend/internal/service"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-
-	_ "github.com/itoqsky/money-tracker-backend/docs"
 )
 
 type Handler struct {
@@ -20,8 +15,6 @@ func NewHandler(s *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	routes := gin.New()
-
-	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	auth := routes.Group("/auth")
 	{
