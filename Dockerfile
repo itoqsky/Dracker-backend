@@ -22,4 +22,4 @@ COPY --from=0 /github.com/itoqsky/money-tracker-backend/configs/ ./configs/
 
 EXPOSE 8080
 
-CMD ["./app"]
+CMD ./app
