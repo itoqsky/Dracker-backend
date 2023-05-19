@@ -2,6 +2,8 @@ package storage
 
 import (
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -31,8 +33,15 @@ func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
 	}
 
 	err = db.Ping()
+	for i := 0; i < 10 && err != nil; i++ {
+		log.Println("Try to connect to DB...")
+		err = db.Ping()
+		time.Sleep(time.Second * 2)
+	}
+
 	if err != nil {
 		return nil, err
 	}
+
 	return db, err
 }

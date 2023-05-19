@@ -23,7 +23,7 @@ type Purchase struct {
 	ID          int     `json:"id" db:"id"`
 	GroupId     int     `json:"group_id" db:"group_id"`
 	Amount      float32 `json:"amount" db:"amount" binding:"required"`
-	BuyerId     int     `json:"buyer_id" db:"buyer_id"`
+	BuyerId     int     `json:"buyer_id" db:"buyer_id" binding:"required"`
 	Description string  `json:"description" db:"description" binding:"required"`
 	Timestamp   string  `json:"timestamp" db:"timestamp"`
 }

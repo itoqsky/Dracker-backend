@@ -5,14 +5,14 @@ services:
     image: money-tracker-backend-api
     container_name: "money-tracker-backend-api"
     build: ./
-    command: ./wait-for-postgres.sh db ./app
+    # command: ./wait-for-postgres.sh db ./app
     volumes:
       - ./.bin/:/root/
       - ./configs/:/root/configs/
     env_file:
       - .env
     ports:
-      - 8000:8000
+      - 8080:8080
     depends_on:
       - db
 

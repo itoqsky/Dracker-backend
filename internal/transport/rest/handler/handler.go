@@ -3,6 +3,11 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/itoqsky/money-tracker-backend/internal/service"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/itoqsky/money-tracker-backend/docs"
 )
 
 type Handler struct {
@@ -15,6 +20,8 @@ func NewHandler(s *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	routes := gin.New()
+
+	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	auth := routes.Group("/auth")
 	{
@@ -34,8 +41,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			users := groups.Group(":id/users")
 			{
-				users.GET("/", h.getAllUsers)
 				users.POST("/", h.inviteUser)
+				users.GET("/", h.getAllUsers)
 				users.DELETE("/", h.kickUser)
 			}
 
@@ -54,15 +61,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			debts.GET("/", h.getAllDebts)
 			debts.PUT("/", h.updateDebt)
 		}
-
-		// users := api.Group("/users")
-		// {
-		// 	users.GET("/")
-		// 	users.GET("/:id")
-		// 	users.POST("/")
-		// 	users.PUT("/:id")
-		// 	users.DELETE("/:id")
-		// }
 	}
 
 	return routes
