@@ -7,14 +7,14 @@ build:
 run: build
 	docker-compose up --remove-orphans --build server
 
-# create-migration:
-# 	migrate create -ext sql -dir schema/ -seq $(NAME)
+create-migration:
+	migrate create -ext sql -dir schema/ -seq $(NAME)
 
 migrate:
-	migrate -path ./schema -database "postgres://postgres:qwerty@192.168.56.1:5436/postgres?sslmode=disable" up
+	migrate -path ./schema -database "postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable" up
 
 migrate-down:
-	migrate -path ./schema -database "postgres://postgres:qwerty@192.168.56.1:5436/postgres?sslmode=disable" down 1
+	migrate -path ./schema -database "postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable" down 1
 
 migrate-drop:
-	migrate -path ./schema -database "postgres://postgres:qwerty@192.168.56.1:5436/postgres?sslmode=disable" drop
+	migrate -path ./schema -database "postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable" drop

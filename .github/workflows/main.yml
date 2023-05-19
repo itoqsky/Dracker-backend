@@ -56,6 +56,8 @@ jobs:
 
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
+            cd mntrbe
+
             docker-compose stop
             docker-compose rm -f
             docker-compose pull
