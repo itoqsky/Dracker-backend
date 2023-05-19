@@ -20,6 +20,6 @@ COPY --from=0 /github.com/itoqsky/money-tracker-backend/.bin/app .
 COPY --from=0 /github.com/itoqsky/money-tracker-backend/configs/ ./configs/
 # COPY --from=0 /github.com/itoqsky/money-tracker-backend/wait-for-postgres.sh ./wait-for-postgres.sh
 
-EXPOSE 8000
+EXPOSE 8080
 
 CMD ["./app"]
